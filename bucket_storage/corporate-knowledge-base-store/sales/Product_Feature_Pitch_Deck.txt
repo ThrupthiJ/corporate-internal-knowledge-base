@@ -1,0 +1,26 @@
+================================================================================
+CORPORATE INTERNAL KNOWLEDGE BASE - SALES & COMMERCIAL
+CONFIDENTIAL: SALES DEPARTMENT ONLY
+================================================================================
+Document Title: Enterprise Product Presentation & Feature Battlecard
+Document ID:    SALES-DOC-2026-003
+Classification: Internal Sales Enablement Material
+Author:         Product Marketing Lead
+Last Updated:   2026-01-30
+
+1. VALUE PROPOSITIONS TO HIGHLIGHT
+- Granular Folder-Level Security: Keep HR salaries, IT infrastructure specs,
+  and Sales pipelines completely segregated under zero-trust S3 policies.
+- Instant Cross-Department Search: Find public and approved knowledge items in
+  sub-50 milliseconds without risking permission leakage.
+- Complete Audit Trail Compliance: Satisfy GDPR, HIPAA, and SOC 2 requirements
+  with immutable tamper-evident logs of every read, write, and blocked attempt.
+
+2. OBJECTION HANDLING QUICK REFERENCE
+- Objection: "Can our auditors see who tried to download confidential files?"
+  Response: "Yes, every unauthorized request generates an immediate 403 alert
+  in CloudWatch and our central audit trail."
+- Objection: "Is deployment locked into one cloud provider?"
+  Response: "The application supports both AWS S3 object storage and standard
+  S3-compatible APIs for high flexibility and multi-cloud readiness."
+================================================================================

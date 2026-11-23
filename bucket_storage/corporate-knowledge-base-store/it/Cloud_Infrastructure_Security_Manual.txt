@@ -1,0 +1,30 @@
+================================================================================
+CORPORATE INTERNAL KNOWLEDGE BASE - INFORMATION TECHNOLOGY
+CONFIDENTIAL: IT & SECURITY OPERATIONS ONLY
+================================================================================
+Document Title: Cloud Infrastructure & VM Security Architecture Manual
+Document ID:    IT-DOC-2026-001
+Classification: Restricted - IT Operations & Security Admin
+Author:         Principal Cloud Architect & Lead Security Engineer
+Last Updated:   2026-02-10
+
+1. CLOUD ARCHITECTURE OVERVIEW
+- Compute: Amazon EC2 Linux instances deployed inside a custom Virtual Private
+  Cloud (VPC) across dual Availability Zones for high availability.
+- Object Storage: Amazon S3 with Server-Side Encryption (SSE-S3 / AES-256) and
+  enforced Bucket Policies restricting folder-level access prefixes.
+- IAM Architecture: Strict Least Privilege RBAC with fine-grained group policies.
+
+2. SECURITY HARDENING STANDARDS
+- Operating System: Ubuntu 24.04 LTS / Amazon Linux 2023 with kernel livepatching.
+- Bastion Host: SSH port 22 closed to 0.0.0.0/0. Remote access strictly via
+  AWS Systems Manager (SSM) Session Manager (Zero-Trust architecture).
+- Reverse Proxy: Nginx terminates TLS 1.3 with forward secrecy ciphers.
+- Web Application Firewall (AWS WAF): Rate limiting enabled (max 200 req/min/IP).
+
+3. S3 STORAGE ENCRYPTION & VERSIONING
+- S3 Bucket Key: Versioning is permanently ENABLED to prevent accidental deletion.
+- S3 Object Lock / Retention: Audit logs are protected under Compliance mode.
+- Access Control: Folder prefixes /hr/, /it/, /sales/, and /shared/ enforced
+  via S3 bucket policies and web application token validation.
+================================================================================

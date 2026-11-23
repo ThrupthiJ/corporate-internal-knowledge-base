@@ -1,0 +1,26 @@
+================================================================================
+CORPORATE INTERNAL KNOWLEDGE BASE - COMPANY WIDE (SHARED)
+CLASSIFICATION: INTERNAL PUBLIC - ALL EMPLOYEES
+================================================================================
+Document Title: Corporate Internal Knowledge Base User Manual & FAQ
+Document ID:    SHARED-DOC-2026-003
+Classification: All Departments
+Author:         IT Systems & Knowledge Management
+Last Updated:   2026-02-15
+
+1. SYSTEM PURPOSE
+The Corporate Internal Knowledge Base is a secure cloud-native file-sharing and
+knowledge repository hosted on an AWS Cloud VM backed by Amazon S3 Object Storage.
+
+2. ACCESS PERMISSIONS QUICK GUIDE
+- HR Members: Can upload, view, and search HR docs and Shared docs.
+- IT Members: Can upload, view, and search IT docs and Shared docs.
+- Sales Members: Can upload, view, and search Sales docs and Shared docs.
+- Shared Folder: Accessible by all authenticated corporate employees.
+- Security Admin & Auditor: Full visibility for compliance verification.
+
+3. AUDIT MONITORING NOTICE
+In compliance with ISO 27001 and SOC 2 Type II, all user activities (logins,
+document searches, uploads, downloads, and unauthorized access attempts) are
+logged in real time with timestamp, user ID, and source IP address.
+================================================================================

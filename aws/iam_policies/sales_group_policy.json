@@ -1,0 +1,42 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowListBucketWithPrefixRestriction",
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::corporate-knowledge-base-store",
+      "Condition": {
+        "StringLike": {
+          "s3:prefix": [
+            "",
+            "sales/*",
+            "shared/*"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "AllowSalesAndSharedReadWrite",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::corporate-knowledge-base-store/sales/*",
+        "arn:aws:s3:::corporate-knowledge-base-store/shared/*"
+      ]
+    },
+    {
+      "Sid": "ExplicitDenyOtherDepartments",
+      "Effect": "Deny",
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::corporate-knowledge-base-store/hr/*",
+        "arn:aws:s3:::corporate-knowledge-base-store/it/*"
+      ]
+    }
+  ]
+}

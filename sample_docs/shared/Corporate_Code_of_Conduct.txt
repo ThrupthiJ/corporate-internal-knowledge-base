@@ -1,0 +1,26 @@
+================================================================================
+CORPORATE INTERNAL KNOWLEDGE BASE - COMPANY WIDE (SHARED)
+CLASSIFICATION: INTERNAL PUBLIC - ALL EMPLOYEES
+================================================================================
+Document Title: Corporate Code of Business Conduct & Ethics
+Document ID:    SHARED-DOC-2026-001
+Classification: All Departments (HR, IT, Sales, Executive)
+Author:         Chief Compliance Officer
+Last Updated:   2026-01-05
+
+1. COMMITMENT TO INTEGRITY
+Every employee, contractor, and executive is expected to maintain the highest
+standards of professional and personal integrity in all corporate activities.
+
+2. DATA PRIVACY & CLOUD SECURITY
+- Never share corporate login credentials or Multi-Factor Authentication codes.
+- Only upload departmental documentation to your designated storage area.
+- Shared documents must contain general corporate information, standard operating
+  procedures, or public company announcements.
+
+3. WHISTLEBLOWER & ETHICS HOTLINE
+Employees who observe potential compliance violations, unauthorized data access,
+or security breaches can report anonymously via:
+- Online Portal: ethics.internal.corp
+- Secure Phone: 1-800-CORP-ETHICS
+================================================================================

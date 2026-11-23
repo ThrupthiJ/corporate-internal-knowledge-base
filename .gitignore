@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+*.egg-info/
+
+# Flask / App
+instance/
+*.db
+audit_trail.log
+audit_trail.db
+flask_session/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Temp scripts
+read_pdf.py
+gen_aws_screenshots.py
+build_pdf_v2.py
+build_pdf.py
+generate_screenshots.py
+setup_aws.py
+
+edgetmp/
+chrometmp/
+test_edge.html
+*.pma
+*.dat

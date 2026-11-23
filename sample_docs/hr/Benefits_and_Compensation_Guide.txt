@@ -1,0 +1,25 @@
+================================================================================
+CORPORATE INTERNAL KNOWLEDGE BASE - HUMAN RESOURCES
+CONFIDENTIAL: HR INTERNAL USE ONLY
+================================================================================
+Document Title: Corporate Benefits & Compensation Structure FY2026
+Document ID:    HR-DOC-2026-002
+Classification: Highly Confidential - HR Leadership & Executive Board
+Author:         Benefits & Payroll Lead
+Last Updated:   2026-02-01
+
+1. COMPENSATION GRADES & SALARY BANDS
+- Grade L1 - L3: Junior Associate to Senior Associate ($65,000 - $95,000)
+- Grade L4 - L5: Team Lead / Principal Specialist ($105,000 - $145,000)
+- Grade L6 - L8: Director & Department Heads ($160,000 - $240,000 + Equity)
+
+2. HEALTHCARE & RETIREMENT
+- 100% employer-sponsored health, dental, and vision insurance for full-time staff.
+- 401(k) / Provident Fund matching up to 6% of base annual salary.
+- Annual health and wellness stipend ($1,200 per employee).
+
+3. ACCESS RESTRICTIONS
+Access to this document is strictly audited. Any access event is logged to the
+CloudWatch Audit Trail. Non-HR personnel attempting to read or download this file
+will trigger an automated Security Alert.
+================================================================================

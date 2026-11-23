@@ -1,0 +1,26 @@
+================================================================================
+CORPORATE INTERNAL KNOWLEDGE BASE - INFORMATION TECHNOLOGY
+CONFIDENTIAL: IT & SECURITY OPERATIONS ONLY
+================================================================================
+Document Title: Enterprise Network & Zero-Trust VPN Access Guidelines
+Document ID:    IT-DOC-2026-003
+Classification: Internal IT Standard
+Author:         Network Infrastructure Lead
+Last Updated:   2026-01-28
+
+1. SCOPE & OBJECTIVE
+Defines mandatory protocols for remote and on-premise connection to corporate cloud
+VPCs, internal knowledge bases, and production database clusters.
+
+2. MULTI-FACTOR AUTHENTICATION (MFA)
+- Hardware security keys (FIDO2 / YubiKey) or TOTP authenticator apps are required.
+- SMS-based OTP is deprecated and rejected due to SIM-swapping vulnerabilities.
+
+3. SPLIT-TUNNELING RESTRICTION
+- Split-tunneling is strictly disabled for sessions touching S3 storage repositories.
+- DNS queries are routed through encrypted corporate DNS resolvers with threat filtering.
+
+4. SESSION TIMEOUTS
+- Idle session timeout: 30 minutes.
+- Absolute maximum session duration: 12 hours before mandatory re-authentication.
+================================================================================

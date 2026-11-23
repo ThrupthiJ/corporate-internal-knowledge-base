@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Corporate Knowledge Base{% endblock %} - Cloud File Sharing</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .font-mono-code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans">
+
+    <!-- Top Navigation Bar -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                
+                <!-- Logo & Brand -->
+                <div class="flex items-center space-x-3">
+                    <a href="{{ url_for('index') }}" class="flex items-center space-x-2 group">
+                        <div class="w-9 h-9 rounded-lg bg-indigo-600 flex items-center justify-center text-white shadow-inner group-hover:bg-indigo-500 transition">
+                            <i data-lucide="shield-check" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <span class="text-base font-bold tracking-tight text-white block leading-tight">CorpVault KB</span>
+                            <span class="text-[10px] text-indigo-300 font-mono block leading-tight">AWS Cloud VM & S3 Architecture</span>
+                        </div>
+                    </a>
+                    
+                    <span class="hidden md:inline-block px-2.5 py-0.5 text-xs rounded-full bg-slate-800 border border-slate-700 text-slate-300 font-mono">
+                        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span>
+                        {{ storage_engine_name }}
+                    </span>
+                </div>
+
+                <!-- Navigation Links -->
+                <nav class="hidden md:flex items-center space-x-1 text-sm font-medium">
+                    <a href="{{ url_for('index') }}" class="px-3 py-2 rounded-md hover:bg-slate-800 transition flex items-center space-x-1.5 {{ 'bg-slate-800 text-white' if request.endpoint == 'index' else 'text-slate-300' }}">
+                        <i data-lucide="folder-lock" class="w-4 h-4"></i>
+                        <span>Knowledge Base</span>
+                    </a>
+                    <a href="{{ url_for('audit_view') }}" class="px-3 py-2 rounded-md hover:bg-slate-800 transition flex items-center space-x-1.5 {{ 'bg-slate-800 text-white' if request.endpoint == 'audit_view' else 'text-slate-300' }}">
+                        <i data-lucide="activity" class="w-4 h-4"></i>
+                        <span>Audit Trail</span>
+                        {% if can_view_audit %}
+                        <span class="ml-1 px-1.5 py-0.2 text-[10px] bg-red-500 text-white font-bold rounded-full">SecOps</span>
+                        {% endif %}
+                    </a>
+                    <a href="{{ url_for('architecture_view') }}" class="px-3 py-2 rounded-md hover:bg-slate-800 transition flex items-center space-x-1.5 {{ 'bg-slate-800 text-white' if request.endpoint == 'architecture_view' else 'text-slate-300' }}">
+                        <i data-lucide="network" class="w-4 h-4"></i>
+                        <span>Architecture & RBAC Matrix</span>
+                    </a>
+                </nav>
+
+                <!-- Active User Profile & Quick Switcher -->
+                <div class="flex items-center space-x-2">
+                    {% if current_user %}
+                    <div class="relative">
+                        <button onclick="document.getElementById('profileDropdown').classList.toggle('hidden')" 
+                                class="flex items-center space-x-2 bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg border border-slate-700 transition text-left cursor-pointer">
+                            <div class="w-7 h-7 rounded-full bg-indigo-500/30 text-indigo-300 flex items-center justify-center font-bold text-xs border border-indigo-400/30">
+                                {{ current_user.username[:2].upper() }}
+                            </div>
+                            <div class="hidden sm:block">
+                                <div class="text-xs font-semibold text-white leading-tight flex items-center space-x-1">
+                                    <span>{{ current_user.full_name }}</span>
+                                    <span class="text-[9px] px-1.5 py-0.2 rounded bg-indigo-600 text-white uppercase font-mono">{{ current_user.department }}</span>
+                                </div>
+                                <div class="text-[10px] text-slate-400 font-mono leading-tight">Click to Switch Role ▼</div>
+                            </div>
+                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400"></i>
+                        </button>
+                        
+                        <!-- Role Switcher Dropdown (Clickable) -->
+                        <div id="profileDropdown" class="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-2xl border border-slate-200 py-2 hidden z-50 text-slate-800">
+                            <div class="px-3 py-2 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
+                                <div>
+                                    <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Switch Department Role</p>
+                                    <p class="text-[10px] text-slate-500">Choose a department to test permissions</p>
+                                </div>
+                                <button onclick="document.getElementById('profileDropdown').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 text-xs font-bold px-1">✕</button>
+                            </div>
+                            <div class="max-h-64 overflow-y-auto py-1">
+                                {% for u_key, u_val in users_list.items() %}
+                                <a href="{{ url_for('switch_user', username=u_key) }}" class="flex items-center justify-between px-3 py-2 hover:bg-indigo-50 text-xs transition {{ 'bg-indigo-50 font-semibold' if current_user.username == u_key else '' }}">
+                                    <div>
+                                        <div class="text-slate-800">{{ u_val.full_name }}</div>
+                                        <div class="text-[10px] text-slate-500">{{ u_val.title }} ({{ u_val.department.upper() }})</div>
+                                    </div>
+                                    <span class="px-1.5 py-0.5 text-[9px] rounded font-mono uppercase bg-slate-100 text-slate-600 border">{{ u_val.department }}</span>
+                                </a>
+                                {% endfor %}
+                            </div>
+                            <div class="border-t border-slate-100 mt-1 pt-1 px-2">
+                                <a href="{{ url_for('logout') }}" class="flex items-center space-x-1.5 text-xs text-red-600 hover:bg-red-50 px-2 py-1.5 rounded transition">
+                                    <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+                                    <span>Sign Out</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="{{ url_for('logout') }}" title="Sign Out" class="p-1.5 rounded-lg bg-slate-800 hover:bg-red-950 text-slate-400 hover:text-red-400 border border-slate-700 transition">
+                        <i data-lucide="log-out" class="w-4 h-4"></i>
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('login') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition">Sign In</a>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Flash Messages Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 w-full">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="mb-3 p-3.5 rounded-lg text-sm flex items-center justify-between shadow-sm transition
+                        {% if category == 'success' %} bg-emerald-50 border border-emerald-200 text-emerald-800
+                        {% elif category == 'error' %} bg-rose-50 border border-rose-200 text-rose-800 font-medium
+                        {% else %} bg-indigo-50 border border-indigo-200 text-indigo-800 {% endif %}">
+                        <div class="flex items-center space-x-2">
+                            {% if category == 'success' %}
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
+                            {% elif category == 'error' %}
+                                <i data-lucide="alert-octagon" class="w-4 h-4 text-rose-600"></i>
+                            {% else %}
+                                <i data-lucide="info" class="w-4 h-4 text-indigo-600"></i>
+                            {% endif %}
+                            <span>{{ message }}</span>
+                        </div>
+                        <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-600">
+                            <i data-lucide="x" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main Content Body -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 text-slate-500 py-6 text-xs mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-2">
+                <i data-lucide="shield" class="w-4 h-4 text-indigo-600"></i>
+                <span class="font-semibold text-slate-700">CorpVault™ Enterprise Knowledge Base v2.4</span>
+                <span>• Fine-Grained Access Control & Audit Monitoring</span>
+            </div>
+            <div class="flex items-center space-x-4 font-mono text-[11px] text-slate-400">
+                <span>Architecture: AWS EC2 + S3</span>
+                <span>Bucket: s3://{{ s3_bucket_name }}</span>
+                <span>Status: Secure</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        window.addEventListener('click', function(e) {
+            var menu = document.getElementById('profileDropdown');
+            if (menu && !e.target.closest('.relative')) {
+                menu.classList.add('hidden');
+            }
+        });
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

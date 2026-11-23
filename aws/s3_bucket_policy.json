@@ -1,0 +1,77 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "EnforceTLSRequestsOnly",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::corporate-knowledge-base-store",
+        "arn:aws:s3:::corporate-knowledge-base-store/*"
+      ],
+      "Condition": {
+        "Bool": {
+          "aws:SecureTransport": "false"
+        }
+      }
+    },
+    {
+      "Sid": "AllowListBucketOfDepartmentPrefixes",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::123456789012:role/EC2-S3-KBAccess-Role"
+      },
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::corporate-knowledge-base-store"
+    },
+    {
+      "Sid": "AllowHRFolderAccess",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::123456789012:role/HR-Application-Role"
+      },
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::corporate-knowledge-base-store/hr/*",
+        "arn:aws:s3:::corporate-knowledge-base-store/shared/*"
+      ]
+    },
+    {
+      "Sid": "AllowITFolderAccess",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::123456789012:role/IT-Application-Role"
+      },
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::corporate-knowledge-base-store/it/*",
+        "arn:aws:s3:::corporate-knowledge-base-store/shared/*"
+      ]
+    },
+    {
+      "Sid": "AllowSalesFolderAccess",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::123456789012:role/Sales-Application-Role"
+      },
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::corporate-knowledge-base-store/sales/*",
+        "arn:aws:s3:::corporate-knowledge-base-store/shared/*"
+      ]
+    }
+  ]
+}

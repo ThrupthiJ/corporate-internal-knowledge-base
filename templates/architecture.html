@@ -1,0 +1,305 @@
+{% extends "base.html" %}
+
+{% block title %}System Architecture & Access Control Matrix{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+
+    <!-- Header -->
+    <div>
+        <div class="flex items-center space-x-2 text-indigo-600 text-xs font-mono mb-1">
+            <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
+            <span>Architecture Specification & Security Blueprint</span>
+        </div>
+        <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Cloud Architecture & Access Control Matrix</h1>
+        <p class="text-xs text-slate-500 mt-1">
+            Formal technical specification of the AWS EC2 VM, Amazon S3 Object Storage hierarchy, IAM Role boundaries, and Audit Logging subsystem.
+        </p>
+    </div>
+
+    <!-- Section 1: Detailed Architecture Diagram -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="p-6 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
+            <div>
+                <span class="text-[10px] font-mono uppercase bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded font-bold">Cloud Infrastructure</span>
+                <h2 class="text-base font-bold text-slate-900 mt-1">Detailed Cloud Architecture Diagram</h2>
+            </div>
+            <span class="text-xs text-slate-400 font-mono">AWS VPC & Multi-Tier Model</span>
+        </div>
+
+        <div class="p-6 bg-slate-900 rounded-b-2xl text-slate-100 overflow-x-auto">
+            <!-- Mermaid Diagram Container -->
+            <div class="mermaid text-center py-4">
+flowchart TB
+    subgraph Clients["Corporate Users & Devices"]
+        U_HR["HR Department<br/>(hr_lead, hr_user)"]
+        U_IT["IT Department<br/>(it_admin, it_specialist)"]
+        U_SALES["Sales Department<br/>(sales_exec, sales_rep)"]
+        U_AUDIT["Compliance Auditor<br/>(auditor, CISO)"]
+    end
+
+    subgraph AWS_Cloud["AWS Cloud Infrastructure (us-east-1 VPC)"]
+        subgraph Compute["Cloud Virtual Machine (AWS EC2)"]
+            Nginx["Nginx Reverse Proxy<br/>(Port 80 / 443 TLS)"]
+            App["Flask Knowledge Base App<br/>(Gunicorn WSGI / Python 3.14)"]
+            RBAC["Fine-Grained RBAC Engine<br/>(Least Privilege Policy)"]
+            AuditEng["Audit Logging Service<br/>(Immutable Event Logger)"]
+        end
+
+        subgraph IAM["AWS Identity & Access Management"]
+            EC2Role["EC2 Instance IAM Role<br/>(Least-Privilege S3 Policy)"]
+            BucketPolicy["S3 Bucket Policy<br/>(Prefix-Level Explicit Deny)"]
+        end
+
+        subgraph Storage["Object Storage (Amazon S3)"]
+            S3["S3 Bucket: corporate-knowledge-base-store"]
+            F_HR["Prefix /hr/<br/>(HR Only: Handbook, Benefits)"]
+            F_IT["Prefix /it/<br/>(IT Only: Infra, Incident Playbook)"]
+            F_SALES["Prefix /sales/<br/>(Sales Only: Pricing, Revenue)"]
+            F_SHARED["Prefix /shared/<br/>(Company-Wide: Policies, Calendar)"]
+        end
+
+        subgraph Monitoring["Audit & Monitoring Layer"]
+            DB_Audit["SQLite Audit DB<br/>(audit_trail.db)"]
+            CW_Logs["Amazon CloudWatch Logs / Trail<br/>(audit_trail.log)"]
+        end
+    end
+
+    %% Client Connections
+    U_HR -->|HTTPS| Nginx
+    U_IT -->|HTTPS| Nginx
+    U_SALES -->|HTTPS| Nginx
+    U_AUDIT -->|HTTPS| Nginx
+
+    %% Internal VM Flow
+    Nginx --> App
+    App --> RBAC
+    RBAC --> AuditEng
+
+    %% Security & Storage Connections
+    App -->|boto3 API calls| EC2Role
+    EC2Role -->|Authorized IAM Principal| S3
+    S3 --- F_HR
+    S3 --- F_IT
+    S3 --- F_SALES
+    S3 --- F_SHARED
+
+    %% Audit Flow
+    AuditEng --> DB_Audit
+    AuditEng --> CW_Logs
+            </div>
+        </div>
+
+        <div class="p-4 bg-slate-50 border-t border-slate-100 text-xs text-slate-600 space-y-1">
+            <p><strong>Architecture Highlights:</strong></p>
+            <ul class="list-disc pl-5 space-y-1 text-slate-500">
+                <li><strong>Cloud VM (Compute Tier):</strong> Amazon EC2 running Linux, Nginx, and Python Flask knowledge management engine.</li>
+                <li><strong>Object Storage (Storage Tier):</strong> Amazon S3 with server-side AES-256 encryption and folder prefixes isolating HR, IT, and Sales files.</li>
+                <li><strong>Security & IAM Tier:</strong> No hardcoded AWS credentials; VM assumes an IAM Instance Profile. Bucket policies strictly deny lateral movement.</li>
+                <li><strong>Audit Monitoring Tier:</strong> Dual-destination audit engine recording all access attempts locally and streaming to AWS CloudWatch Logs.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Section 2: Department Access Control Matrix -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="p-6 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
+            <div>
+                <span class="text-[10px] font-mono uppercase bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded font-bold">Access Control</span>
+                <h2 class="text-base font-bold text-slate-900 mt-1">Department Access Control Matrix (RBAC)</h2>
+            </div>
+            <span class="text-xs text-slate-400 font-mono">Fine-Grained Permissions Matrix</span>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+                <thead class="bg-slate-900 text-white font-semibold uppercase tracking-wider text-[11px]">
+                    <tr>
+                        <th class="py-3 px-4">User Role / Identity</th>
+                        <th class="py-3 px-4">Department</th>
+                        <th class="py-3 px-4 text-center bg-pink-950/60">HR Docs (/hr/)</th>
+                        <th class="py-3 px-4 text-center bg-blue-950/60">IT Docs (/it/)</th>
+                        <th class="py-3 px-4 text-center bg-emerald-950/60">Sales Docs (/sales/)</th>
+                        <th class="py-3 px-4 text-center bg-amber-950/60">Shared (/shared/)</th>
+                        <th class="py-3 px-4 text-center bg-slate-800">Audit Trail</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 font-mono text-[11px]">
+                    
+                    <!-- HR Lead -->
+                    <tr class="hover:bg-slate-50">
+                        <td class="py-3 px-4 font-bold text-slate-900 font-sans">hr_lead (Sarah Jenkins)</td>
+                        <td class="py-3 px-4 text-pink-700 font-semibold font-sans">HR Operations</td>
+                        <td class="py-3 px-4 text-center bg-pink-50 text-pink-700 font-bold">Read / Write / Delete</td>
+                        <td class="py-3 px-4 text-center text-rose-600 font-bold bg-rose-50/40">❌ BLOCKED (403)</td>
+                        <td class="py-3 px-4 text-center text-rose-600 font-bold bg-rose-50/40">❌ BLOCKED (403)</td>
+                        <td class="py-3 px-4 text-center text-emerald-700 font-bold bg-emerald-50/40">Read / Write</td>
+                        <td class="py-3 px-4 text-center text-rose-600 font-bold">❌ Denied</td>
+                    </tr>
+
+                    <!-- HR Member -->
+                    <tr class="hover:bg-slate-50">
+                        <td class="py-3 px-4 font-bold text-slate-900 font-sans">hr_user (Michael Chang)</td>
+                        <td class="py-3 px-4 text-pink-700 font-semibold font-sans">HR Operations</td>
+                        <td class="py-3 px-4 text-center bg-pink-50 text-pink-700 font-bold">Read / Write</td>
+                        <td class="py-3 px-4 text-center text-rose-600 font-bold bg-rose-50/40">❌ BLOCKED (403)</td>
+                        <td class="py-3 px-4 text-center text-rose-600 font-bold bg-rose-50/40">❌ BLOCKED (403)</td>
+                        <td class="py-3 px-4 text-center text-emerald-700 font-bold bg-emerald-50/40">Read / Write</td>
+                        <td class="py-3 px-4 text-center text-rose-600 font-bold">❌ Denied</td>
+                    </tr>
+
+                    <!-- IT Admin -->
+                    <tr class="hover:bg-slate-50">
+                        <td class="py-3 px-4 font-bold text-slate-900 font-sans">it_admin (Alex Rivera)</td>
+                        <td class="py-3 px-4 text-blue-700 font-semibold font-sans">IT Infrastructure</td>
+                        <td class="py-3 px-4 text-center text-rose-600 font-bold bg-rose-50/40">❌ BLOCKED (403)</td>
+                        <td class="py-3 px-4 text-center bg-blue-50 text-blue-700 font-bold">Read / Write / Delete</td>
+                        <td class="py-3 px-4 text-center text-rose-600 font-bold bg-rose-50/40">❌ BLOCKED (403)</td>
+                        <td class="py-3 px-4 text-center text-emerald-700 font-bold bg-emerald-50/40">Read / Write</td>
+                        <td class="py-3 px-4 text-center text-rose-600 font-bold">❌ Denied</td>
+                    </tr>
+
+                    <!-- IT Specialist -->
+                    <tr class="hover:bg-slate-50">
+                        <td class="py-3 px-4 font-bold text-slate-900 font-sans">it_specialist (David Kim)</td>
+                        <td class="py-3 px-4 text-blue-700 font-semibold font-sans">IT Infrastructure</td>
+                        <td class="py-3 px-4 text-center text-rose-600 font-bold bg-rose-50/40">❌ BLOCKED (403)</td>
+                        <td class="py-3 px-4 text-center bg-blue-50 text-blue-700 font-bold">Read / Write</td>
+                        <td class="py-3 px-4 text-center text-rose-600 font-bold bg-rose-50/40">❌ BLOCKED (403)</td>
+                        <td class="py-3 px-4 text-center text-emerald-700 font-bold bg-emerald-50/40">Read / Write</td>
+                        <td class="py-3 px-4 text-center text-rose-600 font-bold">❌ Denied</td>
+                    </tr>
+
+                    <!-- Sales Exec -->
+                    <tr class="hover:bg-slate-50">
+                        <td class="py-3 px-4 font-bold text-slate-900 font-sans">sales_exec (Elena Rostova)</td>
+                        <td class="py-3 px-4 text-emerald-700 font-semibold font-sans">Sales & Commercial</td>
+                        <td class="py-3 px-4 text-center text-rose-600 font-bold bg-rose-50/40">❌ BLOCKED (403)</td>
+                        <td class="py-3 px-4 text-center text-rose-600 font-bold bg-rose-50/40">❌ BLOCKED (403)</td>
+                        <td class="py-3 px-4 text-center bg-emerald-50 text-emerald-700 font-bold">Read / Write / Delete</td>
+                        <td class="py-3 px-4 text-center text-emerald-700 font-bold bg-emerald-50/40">Read / Write</td>
+                        <td class="py-3 px-4 text-center text-rose-600 font-bold">❌ Denied</td>
+                    </tr>
+
+                    <!-- Sales Rep -->
+                    <tr class="hover:bg-slate-50">
+                        <td class="py-3 px-4 font-bold text-slate-900 font-sans">sales_rep (Jordan Lee)</td>
+                        <td class="py-3 px-4 text-emerald-700 font-semibold font-sans">Sales & Commercial</td>
+                        <td class="py-3 px-4 text-center text-rose-600 font-bold bg-rose-50/40">❌ BLOCKED (403)</td>
+                        <td class="py-3 px-4 text-center text-rose-600 font-bold bg-rose-50/40">❌ BLOCKED (403)</td>
+                        <td class="py-3 px-4 text-center bg-emerald-50 text-emerald-700 font-bold">Read / Write</td>
+                        <td class="py-3 px-4 text-center text-emerald-700 font-bold bg-emerald-50/40">Read / Write</td>
+                        <td class="py-3 px-4 text-center text-rose-600 font-bold">❌ Denied</td>
+                    </tr>
+
+                    <!-- Compliance Auditor -->
+                    <tr class="hover:bg-slate-50 bg-amber-50/20">
+                        <td class="py-3 px-4 font-bold text-slate-900 font-sans">auditor (Rachel Green)</td>
+                        <td class="py-3 px-4 text-amber-700 font-semibold font-sans">Internal Audit</td>
+                        <td class="py-3 px-4 text-center text-amber-700 font-bold">Read-Only (Audit)</td>
+                        <td class="py-3 px-4 text-center text-amber-700 font-bold">Read-Only (Audit)</td>
+                        <td class="py-3 px-4 text-center text-amber-700 font-bold">Read-Only (Audit)</td>
+                        <td class="py-3 px-4 text-center text-amber-700 font-bold">Read-Only (Audit)</td>
+                        <td class="py-3 px-4 text-center text-emerald-700 font-bold bg-emerald-100">Full Read & Export</td>
+                    </tr>
+
+                    <!-- Superadmin / CISO -->
+                    <tr class="hover:bg-slate-50 bg-indigo-50/30">
+                        <td class="py-3 px-4 font-bold text-indigo-900 font-sans">admin (CISO)</td>
+                        <td class="py-3 px-4 text-indigo-700 font-semibold font-sans">Security Administration</td>
+                        <td class="py-3 px-4 text-center text-indigo-700 font-bold">Full Admin</td>
+                        <td class="py-3 px-4 text-center text-indigo-700 font-bold">Full Admin</td>
+                        <td class="py-3 px-4 text-center text-indigo-700 font-bold">Full Admin</td>
+                        <td class="py-3 px-4 text-center text-indigo-700 font-bold">Full Admin</td>
+                        <td class="py-3 px-4 text-center text-indigo-700 font-bold bg-indigo-100">Full Admin & Export</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Section 3: S3 Folder Hierarchy & User Config -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Folder Structure -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="p-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
+                <div>
+                    <span class="text-[10px] font-mono uppercase bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-bold">Storage Hierarchy</span>
+                    <h3 class="text-sm font-bold text-slate-800 mt-1">S3 Object Storage Folder Structure</h3>
+                </div>
+            </div>
+            <div class="p-5 font-mono text-xs bg-slate-950 text-slate-200 space-y-1">
+                <div class="text-indigo-400 font-bold">s3://{{ s3_bucket_name }}/</div>
+                <div class="pl-4 text-pink-400">├── hr/</div>
+                <div class="pl-8 text-slate-400">├── HR_Employee_Handbook_2026.txt</div>
+                <div class="pl-8 text-slate-400">├── Benefits_and_Compensation_Guide.txt</div>
+                <div class="pl-8 text-slate-400">└── Performance_Appraisal_Form.txt</div>
+                <div class="pl-4 text-blue-400">├── it/</div>
+                <div class="pl-8 text-slate-400">├── Cloud_Infrastructure_Security_Manual.txt</div>
+                <div class="pl-8 text-slate-400">├── Incident_Response_Playbook.txt</div>
+                <div class="pl-8 text-slate-400">└── Network_Access_VPN_Policy.txt</div>
+                <div class="pl-4 text-emerald-400">├── sales/</div>
+                <div class="pl-8 text-slate-400">├── Q4_Enterprise_Sales_Strategy.txt</div>
+                <div class="pl-8 text-slate-400">├── Client_Pricing_Matrix_Confidential.txt</div>
+                <div class="pl-8 text-slate-400">└── Product_Feature_Pitch_Deck.txt</div>
+                <div class="pl-4 text-amber-400">└── shared/</div>
+                <div class="pl-8 text-slate-400">├── Corporate_Code_of_Conduct.txt</div>
+                <div class="pl-8 text-slate-400">├── 2026_Annual_Holiday_Calendar.txt</div>
+                <div class="pl-8 text-slate-400">└── Internal_Knowledge_Base_Guide.txt</div>
+            </div>
+        </div>
+
+        <!-- User & Group Configuration -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="p-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
+                <div>
+                    <span class="text-[10px] font-mono uppercase bg-purple-100 text-purple-700 px-2 py-0.5 rounded font-bold">IAM Architecture</span>
+                    <h3 class="text-sm font-bold text-slate-800 mt-1">IAM User & Group Configuration</h3>
+                </div>
+            </div>
+            <div class="p-4 space-y-3 text-xs">
+                <div class="border rounded-lg p-3 bg-pink-50/30 border-pink-100">
+                    <span class="font-bold text-pink-700">IAM Group: HR-Department-Group</span>
+                    <p class="text-slate-500 text-[11px] mt-0.5">Policy: Attached <code>hr_group_policy.json</code>. Permits <code>s3:*</code> on <code>hr/*</code> & <code>shared/*</code>; explicitly denies <code>it/*</code> and <code>sales/*</code>.</p>
+                </div>
+
+                <div class="border rounded-lg p-3 bg-blue-50/30 border-blue-100">
+                    <span class="font-bold text-blue-700">IAM Group: IT-Department-Group</span>
+                    <p class="text-slate-500 text-[11px] mt-0.5">Policy: Attached <code>it_group_policy.json</code>. Permits <code>s3:*</code> on <code>it/*</code> & <code>shared/*</code>; explicitly denies <code>hr/*</code> and <code>sales/*</code>.</p>
+                </div>
+
+                <div class="border rounded-lg p-3 bg-emerald-50/30 border-emerald-100">
+                    <span class="font-bold text-emerald-700">IAM Group: Sales-Department-Group</span>
+                    <p class="text-slate-500 text-[11px] mt-0.5">Policy: Attached <code>sales_group_policy.json</code>. Permits <code>s3:*</code> on <code>sales/*</code> & <code>shared/*</code>; explicitly denies <code>hr/*</code> and <code>it/*</code>.</p>
+                </div>
+
+                <div class="border rounded-lg p-3 bg-indigo-50/30 border-indigo-100">
+                    <span class="font-bold text-indigo-700">IAM Role: EC2-S3-KBAccess-Role</span>
+                    <p class="text-slate-500 text-[11px] mt-0.5">Assumed by the EC2 VM Instance Profile. Mediates fine-grained access without storing long-lived static AWS access keys on the server.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Mermaid.js for Interactive Architecture Rendering -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+    mermaid.initialize({
+        startOnLoad: true,
+        theme: 'dark',
+        themeVariables: {
+            fontFamily: 'ui-sans-serif, system-ui, sans-serif',
+            primaryColor: '#4f46e5',
+            edgeColor: '#818cf8',
+            lineColor: '#6366f1'
+        }
+    });
+</script>
+{% endblock %}

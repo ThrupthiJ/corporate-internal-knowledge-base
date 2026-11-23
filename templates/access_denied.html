@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}403 Forbidden - Access Denied{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto py-8">
+
+    <div class="bg-white rounded-2xl shadow-xl border-2 border-rose-200 overflow-hidden">
+        
+        <!-- Red Security Alert Header -->
+        <div class="bg-rose-600 text-white p-6 flex items-center space-x-4">
+            <div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+                <i data-lucide="shield-alert" class="w-7 h-7 text-white"></i>
+            </div>
+            <div>
+                <span class="text-[11px] font-mono tracking-widest uppercase bg-rose-700 px-2 py-0.5 rounded text-rose-100 font-bold">
+                    HTTP 403 Forbidden
+                </span>
+                <h1 class="text-xl font-bold mt-1">Cross-Department Access Blocked</h1>
+            </div>
+        </div>
+
+        <!-- Body Details -->
+        <div class="p-6 space-y-6">
+            
+            <div class="bg-rose-50 border border-rose-200 rounded-xl p-4 text-xs text-rose-900 space-y-2">
+                <div class="font-bold text-sm flex items-center space-x-2 text-rose-800">
+                    <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-600"></i>
+                    <span>Principle of Least Privilege Enforced</span>
+                </div>
+                <p>
+                    {{ reason }}
+                </p>
+            </div>
+
+            <!-- Security Context Breakdown -->
+            <div class="grid grid-cols-2 gap-3 text-xs">
+                <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                    <span class="text-slate-400 block text-[10px] uppercase font-mono">Attempting User</span>
+                    <span class="font-bold text-slate-800">{{ current_user.full_name }}</span>
+                    <span class="text-slate-500 block text-[11px]">Role: {{ current_user.role }} (Dept: {{ current_user.department.upper() }})</span>
+                </div>
+
+                <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                    <span class="text-slate-400 block text-[10px] uppercase font-mono">Target Resource</span>
+                    <span class="font-bold text-slate-800 truncate block">{{ filename }}</span>
+                    <span class="text-slate-500 block text-[11px]">Target Folder: /{{ dept }}/</span>
+                </div>
+            </div>
+
+            <!-- Audit Trail Logged Notice -->
+            <div class="bg-slate-900 text-slate-200 rounded-xl p-4 font-mono text-[11px] space-y-1.5 border border-slate-800">
+                <div class="flex items-center justify-between text-indigo-400 font-bold">
+                    <span>SECURITY AUDIT EVENT REGISTERED</span>
+                    <span class="text-rose-400">STATUS: BLOCKED_403</span>
+                </div>
+                <div class="text-slate-400">Source IP: {{ request.remote_addr }}</div>
+                <div class="text-slate-400">IAM Evaluation: Explicit Deny (Cross-Prefix Isolation)</div>
+                <div class="text-emerald-400">Incident dispatched to CloudWatch Log Stream & SQLite Audit Table.</div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center justify-between pt-2">
+                <a href="{{ url_for('index') }}" class="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-xs font-semibold text-slate-700 transition flex items-center space-x-2">
+                    <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+                    <span>Return to Authorized Documents</span>
+                </a>
+
+                <a href="{{ url_for('audit_view') }}" class="px-4 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-xs font-semibold text-white transition flex items-center space-x-2">
+                    <i data-lucide="activity" class="w-3.5 h-3.5 text-indigo-400"></i>
+                    <span>Inspect Event in Audit Trail</span>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

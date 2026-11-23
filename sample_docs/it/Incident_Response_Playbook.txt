@@ -1,0 +1,28 @@
+================================================================================
+CORPORATE INTERNAL KNOWLEDGE BASE - INFORMATION TECHNOLOGY
+CONFIDENTIAL: IT & SECURITY OPERATIONS ONLY
+================================================================================
+Document Title: Cybersecurity Incident Response Playbook (NIST SP 800-61)
+Document ID:    IT-DOC-2026-002
+Classification: Restricted - IT Security Team
+Author:         Incident Response Lead
+Last Updated:   2026-02-18
+
+1. PHASES OF INCIDENT RESPONSE
+- Phase 1: Preparation (Continuous logging via CloudTrail, CloudWatch & App Audits)
+- Phase 2: Detection & Analysis (Automated alerts on >3 consecutive 403 Forbidden events)
+- Phase 3: Containment (Quarantine compromised IAM credentials / isolate VM instance)
+- Phase 4: Eradication (Revoke tokens, rotate S3 KMS keys, patch vulnerabilities)
+- Phase 5: Recovery (Restore verified clean S3 version snapshots)
+- Phase 6: Post-Incident Review (Root Cause Analysis published within 72 hours)
+
+2. SEVERITY TIERS
+- P1 (Critical): Active data exfiltration, ransomware, total service outage.
+- P2 (Major): Lateral movement attempt detected across department boundaries.
+- P3 (Moderate): Single user credential stuffing, localized permission anomalies.
+- P4 (Low): Informational events, misconfigured client IP warning.
+
+3. ESCALATION CONTACTS
+- 24/7 SecOps Hot-line: ext-9911
+- Lead Security Architect: it-security@internal.corp
+================================================================================

@@ -1,0 +1,27 @@
+================================================================================
+CORPORATE INTERNAL KNOWLEDGE BASE - SALES & COMMERCIAL
+CONFIDENTIAL: SALES DEPARTMENT ONLY
+================================================================================
+Document Title: Confidential Enterprise Pricing Matrix & Discount Approval Tiers
+Document ID:    SALES-DOC-2026-002
+Classification: Highly Confidential - Trade Secret
+Author:         Head of Commercial Operations
+Last Updated:   2026-02-12
+
+1. BASE PRICING TIERS
+- Tier 1 (Up to 250 Users): $18 / user / month billed annually.
+- Tier 2 (251 - 1,000 Users): $14 / user / month billed annually.
+- Tier 3 (1,001 - 5,000 Users): $10 / user / month + $5,000 dedicated cloud setup.
+- Tier 4 (Enterprise Unlimited): Custom contract ($100k minimum floor).
+
+2. DISCOUNTING THRESHOLDS & APPROVAL MATRIX
+- Up to 10% Discount: Account Executive discretion.
+- 11% - 20% Discount: Sales Director sign-off required in CRM.
+- 21% - 30% Discount: VP of Sales formal written authorization.
+- Greater than 30%: CFO approval required.
+
+3. STRICT SECURITY RESTRICTION
+Pricing matrices are strictly proprietary. Unauthorized distribution outside
+the Sales organization or to external competitors violates Non-Disclosure
+Agreements and corporate security protocol.
+================================================================================

@@ -1,0 +1,28 @@
+================================================================================
+CORPORATE INTERNAL KNOWLEDGE BASE - HUMAN RESOURCES
+CONFIDENTIAL: HR INTERNAL USE ONLY
+================================================================================
+Document Title: Annual Performance Evaluation & Appraisal Guidelines
+Document ID:    HR-DOC-2026-003
+Classification: Internal HR Template
+Author:         Talent Operations Lead
+Last Updated:   2026-01-20
+
+1. EVALUATION CYCLE
+- Q1 Goal Setting (Completed by Feb 15)
+- Mid-Year Performance Check-in (Completed by July 15)
+- End-of-Year Formal Assessment & 360 Feedback (Completed by Dec 1)
+
+2. CORE COMPETENCY BENCHMARKS
+- Technical Excellence and Job Execution (40%)
+- Cross-Functional Collaboration & Communication (25%)
+- Problem Solving and Ownership (20%)
+- Adherence to Security and Corporate Ethics (15%)
+
+3. RATING SCALE
+- Level 5: Consistently Exceeds High Expectations
+- Level 4: Frequently Exceeds Expectations
+- Level 3: Meets Expectations Solidly
+- Level 2: Needs Targeted Improvement
+- Level 1: Unsatisfactory Performance (Triggers Performance Improvement Plan)
+================================================================================
