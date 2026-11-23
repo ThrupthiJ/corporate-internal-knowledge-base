@@ -17,6 +17,13 @@ app.config.from_object(Config)
 storage, storage_engine_name = get_storage()
 init_audit_db()
 
+# Auto-seed sample files and audit history if needed
+try:
+    from seed_data import seed
+    seed()
+except Exception as _e:
+    pass
+
 def get_current_user():
     username = session.get('username')
     if username and username in USERS:
@@ -448,8 +455,6 @@ def architecture_view():
     return render_template('architecture.html')
 
 if __name__ == '__main__':
-    # Initialize seeds if empty
-    from seed_data import seed
-    seed()
-    print("[*] Launching Corporate Internal Knowledge Base on port 5000...")
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    print(f"[*] Launching Corporate Internal Knowledge Base on port {port}...")
+    app.run(host='0.0.0.0', port=port, debug=False)
